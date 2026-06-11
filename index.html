@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fresh Beginnings — Homemade Breakfast, Daily Delivered</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:       #2C4A2E;
+      --green-light: #3D6B40;
+      --terra:       #C1440E;
+      --terra-soft:  #E8784A;
+      --cream:       #FDF6EC;
+      --cream-dark:  #F5EBD8;
+      --ink:         #1E1E1E;
+      --muted:       #6B5C4E;
+      --white:       #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--green);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo img {
+      height: 52px;
+      width: auto;
+      display: block;
+      background: var(--white);
+      border-radius: 8px;
+      padding: 4px 10px;
+    }
+    .nav-cta {
+      background: var(--terra);
+      color: var(--white);
+      border: none;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--terra-soft); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--green);
+      color: var(--cream);
+      padding: 64px 24px 56px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.18;
+      margin-bottom: 18px;
+      color: var(--cream);
+    }
+    .hero h1 em { font-style: italic; color: var(--terra-soft); }
+    .hero p {
+      font-size: 1.05rem;
+      color: #C8BAA8;
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .hero-tag {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--cream);
+      font-size: 0.82rem;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+    .hero-btn {
+      display: inline-block;
+      background: var(--terra);
+      color: var(--white);
+      padding: 14px 36px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .hero-btn:hover { background: var(--terra-soft); transform: translateY(-1px); }
+
+    /* ── SECTION WRAPPER ── */
+    .section { padding: 56px 24px; }
+    .section-inner { max-width: 720px; margin: 0 auto; }
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--cream-dark); }
+    .steps { display: grid; gap: 20px; }
+    @media (min-width: 600px) { .steps { grid-template-columns: repeat(3,1fr); } }
+    .step {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px 20px;
+      border-top: 3px solid var(--terra);
+    }
+    .step-num {
+      font-family: 'Lora', serif;
+      font-size: 1.6rem;
+      color: var(--terra);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step h3 { font-size: 0.97rem; font-weight: 600; margin-bottom: 6px; color: var(--green); }
+    .step p { font-size: 0.88rem; color: var(--muted); }
+
+    /* ── MENU FLIP CARDS ── */
+    .menu-grid { display: grid; gap: 14px; }
+    @media (min-width: 560px) { .menu-grid { grid-template-columns: repeat(2,1fr); } }
+    .flip-card { height: 120px; perspective: 1000px; cursor: pointer; }
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      padding: 18px;
+      border: 1px solid #E8DDD0;
+    }
+    .flip-front {
+      background: var(--white);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .flip-back {
+      background: var(--green);
+      color: var(--cream);
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .flip-back .back-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--terra-soft);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .flip-back ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .flip-back ul li { font-size: 0.82rem; color: #C8D8C9; padding-left: 12px; position: relative; }
+    .flip-back ul li::before { content: "·"; position: absolute; left: 0; color: var(--terra-soft); }
+    .flip-hint { font-size: 0.72rem; color: var(--muted); text-align: center; margin-bottom: 12px; font-style: italic; }
+    .menu-day {
+      background: var(--green);
+      color: var(--cream);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .menu-info h3 { font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600; color: var(--green); margin-bottom: 4px; }
+    .menu-info p { font-size: 0.83rem; color: var(--muted); }
+    .menu-note {
+      margin-top: 20px;
+      background: #FFF6EE;
+      border-left: 3px solid var(--terra);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    /* ── PLANS ── */
+    .plans-bg { background: var(--green); }
+    .plans-bg .section-title { color: var(--cream); }
+    .plans-bg .section-sub { color: #A8BEA9; }
+    .plans-grid { display: grid; gap: 16px; }
+    @media (min-width: 560px) { .plans-grid { grid-template-columns: repeat(2,1fr); } }
+    .plan-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      padding: 28px 24px;
+      color: var(--cream);
+      position: relative;
+    }
+    .plan-card.featured { background: var(--white); color: var(--ink); border-color: var(--white); }
+    .plan-badge {
+      position: absolute;
+      top: -11px;
+      left: 20px;
+      background: var(--terra);
+      color: var(--white);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 12px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .plan-name { font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .plan-price { font-size: 2rem; font-weight: 700; font-family: 'Lora', serif; color: var(--terra-soft); line-height: 1; margin-bottom: 4px; }
+    .plan-card.featured .plan-price { color: var(--terra); }
+    .plan-per { font-size: 0.8rem; opacity: 0.7; margin-bottom: 16px; }
+    .plan-features { list-style: none; font-size: 0.88rem; display: flex; flex-direction: column; gap: 7px; }
+    .plan-features li::before { content: "✓  "; color: var(--terra-soft); font-weight: 700; }
+    .plan-card.featured .plan-features li::before { color: var(--terra); }
+
+    /* ── ADD-ONS ── */
+    .addons { background: var(--cream-dark); }
+    .addon-list { display: flex; flex-wrap: wrap; gap: 12px; }
+    .addon-chip {
+      background: var(--white);
+      border: 1px solid #E0D4C4;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 0.9rem;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .addon-chip span { font-weight: 600; color: var(--terra); font-size: 0.95rem; }
+
+    /* ── CART SUMMARY ── */
+    .cart-box {
+      background: var(--green);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .cart-box.visible { display: block; }
+    .cart-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--terra-soft);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .cart-rows { display: flex; flex-direction: column; gap: 6px; }
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      color: #C8D8C9;
+    }
+    .cart-row.total {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 8px;
+      margin-top: 4px;
+      color: var(--cream);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .cart-row .cart-label { color: #A8BEA9; }
+
+    /* ── SUBSCRIBE FORM ── */
+    .subscribe { background: var(--cream); }
+    .form-box {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 36px 28px;
+      border: 1px solid #E8DDD0;
+      box-shadow: 0 4px 24px rgba(44,74,46,0.07);
+    }
+    .form-intro { font-family: 'Lora', serif; font-size: 1.2rem; color: var(--green); margin-bottom: 6px; font-weight: 600; }
+    .form-intro-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 24px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #D8CCC0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--green); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .required { color: var(--terra); font-weight: 700; }
+
+    .addon-checks { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+    .addon-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .addon-check input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--green); cursor: pointer; }
+
+    .form-row { display: grid; gap: 14px; }
+    @media (min-width: 480px) { .form-row { grid-template-columns: 1fr 1fr; } }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--terra);
+      color: var(--white);
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, transform 0.15s;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .submit-btn:hover { background: var(--terra-soft); transform: translateY(-1px); }
+    .submit-note { text-align: center; font-size: 0.8rem; color: var(--muted); margin-top: 12px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green);
+      color: #A8BEA9;
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 0.85rem;
+    }
+    footer strong { color: var(--cream); }
+
+    /* ── WHATSAPP FLOAT ── */
+    .wa-float {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: #25D366;
+      color: white;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      z-index: 200;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 28px; height: 28px; fill: white; }
+
+    /* ── WEEK PICKER CALENDAR ── */
+    .cal-wrap {
+      background: var(--cream);
+      border: 1.5px solid #D8CCC0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--green);
+      color: var(--cream);
+      padding: 10px 14px;
+    }
+    .cal-header span {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .cal-nav {
+      background: none;
+      border: none;
+      color: var(--cream);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .cal-nav:hover { background: rgba(255,255,255,0.15); }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      padding: 10px;
+      background: var(--cream);
+    }
+    .cal-dow {
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      padding: 4px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cal-dow.monday { color: var(--terra); }
+    .cal-day {
+      text-align: center;
+      padding: 7px 2px;
+      font-size: 0.85rem;
+      border-radius: 6px;
+      cursor: default;
+      color: #B0A090;
+    }
+    .cal-day.monday {
+      color: var(--green);
+      font-weight: 700;
+      cursor: pointer;
+      background: #EEF4EE;
+      border: 1px solid #C8D8C9;
+      transition: background 0.15s, color 0.15s;
+    }
+    .cal-day.monday:hover { background: var(--green); color: var(--cream); }
+    .cal-day.monday.selected { background: var(--terra); color: var(--white); border-color: var(--terra); }
+    .cal-day.past { opacity: 0.35; pointer-events: none; }
+    .cal-day.weekend { color: #D8CABC; font-size: 0.78rem; cursor: not-allowed; }
+    .cal-day.empty { visibility: hidden; }
+    .week-result {
+      margin-top: 10px;
+      background: var(--green);
+      color: var(--cream);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .week-result.visible { display: flex; }
+    .week-result strong { color: var(--terra-soft); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="logo.png" alt="Fresh Beginnings" />
+  </div>
+  <a class="nav-cta" href="#subscribe">Subscribe Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Breakfast that tastes like<br><em>amma made it.</em></h1>
+  <p>Fresh Andhra-style breakfast, cooked daily and delivered to your door — Monday to Friday.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">No Maida</span>
+    <span class="hero-tag">No Preservatives</span>
+    <span class="hero-tag">Cooked Fresh Daily</span>
+    <span class="hero-tag">Mon–Fri Delivery</span>
+  </div>
+  <a class="hero-btn" href="#subscribe">Start Your Week — ₹450</a>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how">
+  <div class="section-inner">
+    <div class="section-title">How it works</div>
+    <div class="section-sub">Three steps. No confusion.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Fill the form below</h3>
+        <p>Tell us your name, address, and which plan you want. Takes 2 minutes.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>We confirm on WhatsApp</h3>
+        <p>You'll get your subscriber ID and UPI payment link. Pay to confirm your spot. Book by Friday 11 PM for the following week.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Breakfast at your door</h3>
+        <p>Fresh tiffin with chutney and sambar. Every weekday morning.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-title">This week's menu</div>
+    <div class="section-sub">Every meal comes with fresh chutney + sambar.</div>
+    <p class="flip-hint">Tap any card to see ingredients 👆</p>
+    <div class="menu-grid">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="menu-day">Mon</div>
+            <div class="menu-info"><h3>Pesarattu</h3><p>Green moong dosa · ginger chutney · sambar</p></div>
+          </div>
+          <div class="flip-back">
+            <div class="back-title">Ingredients</div>
+            <ul><li>Green moong dal</li><li>Ginger, green chillies</li><li>Cumin, salt</li><li>Fresh ginger chutney</li><li>Homemade sambar</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="menu-day">Tue</div>
+            <div class="menu-info"><h3>Ragi Idli</h3><p>Finger millet idli · coconut chutney · sambar</p></div>
+          </div>
+          <div class="flip-back">
+            <div class="back-title">Ingredients</div>
+            <ul><li>Ragi (finger millet) flour</li><li>Urad dal, fenugreek seeds</li><li>Rock salt</li><li>Fresh coconut chutney</li><li>Homemade sambar</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="menu-day">Wed</div>
+            <div class="menu-info"><h3>Besan Chilla</h3><p>Chickpea crepe · mint chutney · sambar</p></div>
+          </div>
+          <div class="flip-back">
+            <div class="back-title">Ingredients</div>
+            <ul><li>Besan (chickpea flour)</li><li>Onion, tomato, capsicum</li><li>Cumin, turmeric, chilli</li><li>Fresh mint chutney</li><li>Homemade sambar</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="menu-day">Thu</div>
+            <div class="menu-info"><h3>Oats Upma</h3><p>Roasted oats · peanut chutney · sambar</p></div>
+          </div>
+          <div class="flip-back">
+            <div class="back-title">Ingredients</div>
+            <ul><li>Rolled oats</li><li>Curry leaves, mustard, cashews</li><li>Onion, green chilli, lemon</li><li>Fresh peanut chutney</li><li>Homemade sambar</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div class="menu-day">Fri</div>
+            <div class="menu-info"><h3>Set Dosa</h3><p>3 soft dosas · tomato chutney · sambar</p></div>
+          </div>
+          <div class="flip-back">
+            <div class="back-title">Ingredients</div>
+            <ul><li>Rice, urad dal, poha</li><li>Fenugreek seeds, salt</li><li>Cold-pressed oil</li><li>Fresh tomato chutney</li><li>Homemade sambar</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-note">🌿 Menu rotates weekly. No repeat within a week. No maida, no preservatives — ever.</div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="section plans-bg">
+  <div class="section-inner">
+    <div class="section-title">Pick your plan</div>
+    <div class="section-sub">Pay once for the week. No daily hassle.</div>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">Weekly Plan</div>
+        <div class="plan-price">₹450</div>
+        <div class="plan-per">₹90 per meal · Mon to Fri · 5 meals</div>
+        <ul class="plan-features">
+          <li>Fresh breakfast daily</li>
+          <li>Chutney + sambar included</li>
+          <li>Weekly menu rotation</li>
+          <li>WhatsApp order tracking</li>
+        </ul>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-name">Weekly + Eggs</div>
+        <div class="plan-price">₹550</div>
+        <div class="plan-per">₹110 per meal · Mon to Fri · 5 meals</div>
+        <ul class="plan-features">
+          <li>Fresh breakfast daily</li>
+          <li>Chutney + sambar included</li>
+          <li>2 boiled eggs every day</li>
+          <li>WhatsApp order tracking</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADD-ONS -->
+<section class="section addons">
+  <div class="section-inner">
+    <div class="section-title">Add-ons</div>
+    <div class="section-sub">Add to any plan while subscribing.</div>
+    <div class="addon-list">
+      <div class="addon-chip">🥣 Extra Chutney <span>+₹10/day</span></div>
+      <div class="addon-chip">🍌 Banana <span>+₹10/day</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBSCRIBE FORM -->
+<section class="section subscribe" id="subscribe">
+  <div class="section-inner">
+    <div class="section-title">Reserve your tiffin</div>
+    <div class="section-sub">Fill this once. We'll confirm everything on WhatsApp.</div>
+    <div class="form-box">
+      <div class="form-intro">Tell us about yourself</div>
+      <div class="form-intro-sub">We'll send your subscriber ID and payment link on WhatsApp within 2 hours.</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="f-name" placeholder="Priya Reddy" />
+        </div>
+        <div class="form-group">
+          <label>WhatsApp Number <span class="required">*</span></label>
+          <input type="tel" id="f-phone" placeholder="98XXXXXXXX" maxlength="10" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email Address <span class="required">*</span></label>
+        <input type="email" id="f-email" placeholder="you@example.com" />
+      </div>
+
+      <div class="form-group">
+        <label>Delivery Address</label>
+        <textarea id="f-address" placeholder="Flat no, building name, area, landmark..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Choose Your Plan <span class="required">*</span></label>
+        <select id="f-plan" onchange="updateCart()">
+          <option value="">— Select a plan —</option>
+          <option value="Weekly Plan" data-price="450">Weekly Plan — ₹450 (5 meals)</option>
+          <option value="Weekly + Eggs Plan" data-price="550">Weekly + Eggs Plan — ₹550 (5 meals)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Add-ons (optional)</label>
+        <div class="addon-checks">
+          <label class="addon-check">
+            <input type="checkbox" value="Extra Chutney" data-price="10" class="addon-cb" onchange="updateCart()" />
+            Extra Chutney — +₹10/day
+          </label>
+          <label class="addon-check">
+            <input type="checkbox" value="Banana" data-price="10" class="addon-cb" onchange="updateCart()" />
+            Banana — +₹10/day
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Preferred Delivery Time</label>
+        <select id="f-time">
+          <option value="">— Select time —</option>
+          <option value="7:00 AM – 7:30 AM">7:00 AM – 7:30 AM</option>
+          <option value="7:30 AM – 8:00 AM">7:30 AM – 8:00 AM</option>
+          <option value="8:00 AM – 8:30 AM">8:00 AM – 8:30 AM</option>
+          <option value="8:30 AM – 9:00 AM">8:30 AM – 9:00 AM</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Choose Your Start Week <span class="required">*</span></label>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:8px;">📌 Tap any available Monday. Bookings for the coming week close on <strong>Friday at 11 PM</strong>. Weekends are not available.</p>
+        <div class="cal-wrap">
+          <div class="cal-header">
+            <button class="cal-nav" onclick="calPrev()" type="button">&#8249;</button>
+            <span id="cal-month-label"></span>
+            <button class="cal-nav" onclick="calNext()" type="button">&#8250;</button>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <div class="week-result" id="week-result">
+          📅 <span id="week-result-text"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Preferences / Comments (optional)</label>
+        <textarea id="f-comments" placeholder="Any allergies, special requests, or notes for us..."></textarea>
+      </div>
+
+      <!-- CART SUMMARY -->
+      <div class="cart-box" id="cart-box">
+        <div class="cart-title">🛒 Your Order Summary</div>
+        <div class="cart-rows" id="cart-rows"></div>
+      </div>
+
+      <button class="submit-btn" onclick="sendToWhatsApp()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send to WhatsApp & Subscribe
+      </button>
+      <div class="submit-note">You'll receive your subscriber ID + payment link on WhatsApp. Spot confirmed only after payment.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Fresh Beginnings</strong> · Homemade · Daily · Delivered<br />
+  <span style="font-size:0.8rem; margin-top:6px; display:block;">Hyderabad · Mon–Fri deliveries only</span>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a class="wa-float" href="https://wa.me/919XXXXXXXXX" target="_blank" title="Chat on WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+  function getUIDFromPhone(phone) {
+    // Deterministic hash: same phone always produces same ID, any device, any browser
+    let hash = 0;
+    for (let i = 0; i < phone.length; i++) {
+      hash = (hash * 31 + phone.charCodeAt(i)) & 0xFFFFFFFF;
+    }
+    const num = 1000 + (Math.abs(hash) % 9000);
+    return 'FB' + num;
+  }
+
+  function updateCart() {
+    const planSelect = document.getElementById('f-plan');
+    const selectedOption = planSelect.options[planSelect.selectedIndex];
+    const planName = selectedOption.value;
+    const planPrice = parseInt(selectedOption.getAttribute('data-price') || '0');
+
+    const checkedAddons = [...document.querySelectorAll('.addon-cb:checked')];
+    const addonTotal = checkedAddons.reduce((sum, cb) => sum + parseInt(cb.getAttribute('data-price') || '0'), 0);
+
+    const cartBox = document.getElementById('cart-box');
+    const cartRows = document.getElementById('cart-rows');
+
+    if (!planName) { cartBox.classList.remove('visible'); return; }
+
+    cartBox.classList.add('visible');
+
+    let rowsHTML = `<div class="cart-row"><span class="cart-label">${planName}</span><span>₹${planPrice}</span></div>`;
+
+    checkedAddons.forEach(cb => {
+      const price = parseInt(cb.getAttribute('data-price') || '0');
+      rowsHTML += `<div class="cart-row"><span class="cart-label">${cb.value} (add-on)</span><span>+₹${price}/day</span></div>`;
+    });
+
+    const weeklyAddonCost = addonTotal * 5;
+    const total = planPrice + weeklyAddonCost;
+
+    if (addonTotal > 0) {
+      rowsHTML += `<div class="cart-row"><span class="cart-label">Add-ons × 5 days</span><span>+₹${weeklyAddonCost}</span></div>`;
+    }
+    rowsHTML += `<div class="cart-row total"><span>Total for the week</span><span>₹${total}</span></div>`;
+
+    cartRows.innerHTML = rowsHTML;
+  }
+
+  function sendToWhatsApp() {
+    const name     = document.getElementById('f-name').value.trim();
+    const phone    = document.getElementById('f-phone').value.trim();
+    const email    = document.getElementById('f-email').value.trim();
+    const address  = document.getElementById('f-address').value.trim();
+    const planSel  = document.getElementById('f-plan');
+    const planName = planSel.options[planSel.selectedIndex].value;
+    const planPrice= parseInt(planSel.options[planSel.selectedIndex].getAttribute('data-price') || '0');
+    const time     = document.getElementById('f-time').value;
+    const comments = document.getElementById('f-comments').value.trim();
+    const weekText = document.getElementById('week-result-text').textContent.trim();
+
+    if (!name || !phone || !email || !address || !planName || !time || !weekText) {
+      alert('Please fill in all required fields including your start week before subscribing.');
+      return;
+    }
+    if (phone.length !== 10 || isNaN(phone)) {
+      alert('Please enter a valid 10-digit WhatsApp number.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    const checkedAddons = [...document.querySelectorAll('.addon-cb:checked')];
+    const addonTotal = checkedAddons.reduce((sum, cb) => sum + parseInt(cb.getAttribute('data-price') || '0'), 0);
+    const weeklyAddonCost = addonTotal * 5;
+    const total = planPrice + weeklyAddonCost;
+
+    const uid = getUIDFromPhone(phone);
+
+    const msg =
+`🍱 *Fresh Beginnings* | New Subscription
+─────────────────────
+🪪 ${uid} · ${name}
+📱 ${phone} · 📧 ${email}
+📍 ${address}
+─────────────────────
+📦 ${planName}
+⏰ ${time}
+🗓️ ${weekText}
+🛒 ${checkedAddons.length ? checkedAddons.map(cb => cb.value).join(', ') : 'No add-ons'}
+─────────────────────
+💰 Plan ₹${planPrice} + Add-ons ₹${weeklyAddonCost} = *₹${total}*${comments ? `\n─────────────────────\n💬 ${comments}` : ''}`;
+
+    const encoded = encodeURIComponent(msg);
+    window.open(`https://wa.me/919133458116?text=${encoded}`, '_blank');
+  }
+
+  /* ── CALENDAR LOGIC ── */
+  let calYear, calMonth, selectedMonday = null;
+
+  function calInit() {
+    const today = new Date();
+    calYear  = today.getFullYear();
+    calMonth = today.getMonth();
+    renderCal();
+  }
+
+  function calPrev() {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCal();
+  }
+
+  function calNext() {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCal();
+  }
+
+  function renderCal() {
+    const months = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+    document.getElementById('cal-month-label').textContent = months[calMonth] + ' ' + calYear;
+
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    // Day-of-week headers
+    const dows = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    dows.forEach((d, i) => {
+      const el = document.createElement('div');
+      el.className = 'cal-dow' + (i === 1 ? ' monday' : '');
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    // Cutoff: bookings for a Monday close on the Friday before at 11 PM
+    const now = new Date();
+    const todayDow = now.getDay(); // 0=Sun,1=Mon,...,6=Sat
+    const cutoff = new Date(today);
+
+    // Find the most recent Friday and check if it's past 11 PM
+    // If today is Sat(6) or Sun(0), or Fri after 23:00 → next Monday is blocked
+    let blockedUntilMonday = false;
+    if (todayDow === 6) {
+      blockedUntilMonday = true; // Saturday — always blocked
+    } else if (todayDow === 0) {
+      blockedUntilMonday = true; // Sunday — always blocked
+    } else if (todayDow === 5 && now.getHours() >= 23) {
+      blockedUntilMonday = true; // Friday after 11 PM — blocked
+    }
+
+    // The earliest bookable Monday
+    const earliestMonday = new Date(today);
+    // Find next Monday from today
+    const daysUntilMonday = (8 - todayDow) % 7 || 7;
+    earliestMonday.setDate(today.getDate() + daysUntilMonday);
+    // If blocked (Sat/Sun/Fri after 11PM), skip one more week
+    if (blockedUntilMonday) {
+      earliestMonday.setDate(earliestMonday.getDate() + 7);
+    }
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'cal-day empty';
+      grid.appendChild(el);
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(calYear, calMonth, d);
+      const el = document.createElement('div');
+      const dow = date.getDay();
+      const isMonday  = dow === 1;
+      const isWeekend = dow === 0 || dow === 6;
+      const isTooSoon = isMonday && date < earliestMonday;
+
+      el.textContent = d;
+
+      if (isWeekend) {
+        el.className = 'cal-day weekend';
+      } else if (isMonday) {
+        el.className = 'cal-day monday' + (isTooSoon ? ' past' : '');
+      } else {
+        el.className = 'cal-day';
+      }
+
+      if (selectedMonday &&
+          date.getDate()     === selectedMonday.getDate() &&
+          date.getMonth()    === selectedMonday.getMonth() &&
+          date.getFullYear() === selectedMonday.getFullYear()) {
+        el.classList.add('selected');
+      }
+
+      if (isMonday && !isTooSoon) {
+        el.onclick = () => selectMonday(date);
+      }
+
+      grid.appendChild(el);
+    }
+  }
+
+  function selectMonday(date) {
+    selectedMonday = date;
+    const friday = new Date(date);
+    friday.setDate(date.getDate() + 4);
+    const fmt = d => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    document.getElementById('week-result-text').textContent = `${fmt(date)} (Mon) → ${fmt(friday)} (Fri)`;
+    document.getElementById('week-result').classList.add('visible');
+    renderCal();
+  }
+
+  calInit();
+</script>
+
+</body>
+</html>
