@@ -755,17 +755,24 @@
     const uid = getUIDFromPhone(phone);
 
     const msg =
-`🍱 *Fresh Beginnings* | New Subscription
-─────────────────────
-🪪 ${uid} · ${name}
-📱 ${phone} · 📧 ${email}
+`🍱 *Fresh Beginnings*
+─────────────────
+*Customer Details*
+-----------------
+🪪 User-ID : ${uid} . 👤 Name : ${name}
+📱 ${phone}
+📧 ${email}
 📍 ${address}
-─────────────────────
+*Order Details*
+---------------
 📦 ${planName}
 ⏰ ${time}
-🛒 ${addonLines ? checkedAddons.map(cb => cb.value).join(', ') : 'No add-ons'}
-─────────────────────
-💰 Plan ₹${planPrice} + Add-ons ₹${weeklyAddonCost} = *₹${total}*${comments ? `\n─────────────────────\n💬 ${comments}` : ''}`;
+🛒 Add-Ons : ${addonLines ? checkedAddons.map(cb => cb.value).join(', ') : 'No add-ons'}
+*Order Summary*
+---------------
+💰 Plan ₹${planPrice} + Add-ons ₹${weeklyAddonCost} 
+💰 *Total Due : ₹${total}*
+${comments ? `\n─────────────────────\n💬 ${comments}` : ''}`;
 
 
 
